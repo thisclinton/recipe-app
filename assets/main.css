@@ -225,10 +225,8 @@ body {
 }
 
 .meal__container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.2rem;
+    display: grid;
+    gap: 1.5rem;
 }
 
 .meal__card {
