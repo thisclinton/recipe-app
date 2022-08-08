@@ -21,4 +21,18 @@ function addMeal({ strMealThumb, strMeal }) {
             </div>
         </article>
     `;
+
+  const btnHeart = document.querySelector(".ri-heart-line");
+  btnHeart.addEventListener("click", () => {
+    if (btnHeart.classList.contains("ri-heart-line")) {
+      btnHeart.setAttribute("class", "ri-heart-fill");
+    } else {
+      btnHeart.setAttribute("class", "ri-heart-line");
+    }
+  });
+}
+
+function getMealLS() {
+  const mealIds = JSON.parse(localStorage.getItem("mealsIds"));
+  return mealIds === null ? [] : mealIds;
 }

@@ -232,7 +232,7 @@ body {
 .meal__card {
     box-shadow: 0 0 .4rem var(--secondary-hsl);
     border-radius: 1rem;
-    width: clamp(300px, 60vw, 400px);
+    width: clamp(300px, 80vw, 400px);
     overflow: hidden;
     transition: .2s ease-in-out background-color;
 }
