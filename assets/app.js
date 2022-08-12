@@ -1,6 +1,6 @@
 getRandonMeal();
 
-let favMealBasket = [];
+const favMealBasket = JSON.parse(localStorage.getItem("mealIds")) || [];
 
 async function getRandonMeal() {
   const res = await fetch("https://www.themealdb.com/api/json/v1/1/random.php");
@@ -39,30 +39,14 @@ function addMeal(meals) {
   btnHeart.addEventListener("click", () => {
     if (btnHeart.classList.contains("ri-heart-line")) {
       btnHeart.setAttribute("class", "ri-heart-fill");
-      addMealFav(meals);
+      addMealLS(meals);
       favMealBasket.push({ ...meals, meals });
       console.log(favMealBasket);
-      addMealLS(meals);
+      addMealFav(meals);
     } else {
       btnHeart.setAttribute("class", "ri-heart-line");
     }
   });
-}
-
-const favMealContainer = document.querySelector(".recipe__favorite-meal");
-
-function addMealFav(mealsID) {
-  favMealContainer.innerHTML += `
-    <article class="favorite__card">
-        <div class="favorite__top">
-            <img src=${mealsID.strMealThumb} alt="" class="favorite__img">
-            <p class="favorite__title">${mealsID.strMeal}</p>
-        </div>
-        <span class="favorite__delete">
-            <i class="ri-close-line"></i>
-        </span>
-    </article>
-`;
 }
 
 function addMealLS(mealID) {
@@ -75,18 +59,6 @@ function getMealLS() {
   return mealIds === null ? [] : mealIds;
 }
 
-async function fetchFavMeals() {
-  const mealsIds = getMealLS();
-  for (let i = 0; i < mealsIds.length; i++) {
-    const mealID = mealsIds[i];
-    meal = await getMealById(mealID);
-    addMealFav(meal);
-    favMealBasket.push(meal);
-  }
-}
-
-/* 
-
 function removeMealLS(mealID) {
   const mealIds = getMealLS();
   localStorage.setItem(
@@ -95,23 +67,66 @@ function removeMealLS(mealID) {
   );
 }
 
+async function fetchFavMeals() {
+  favMealContainer.innerHTML = "";
+  const mealsIds = getMealLS();
+  for (let i = 0; i < mealsIds.length; i++) {
+    const mealID = mealsIds[i];
+    meal = await getMealById(mealID);
+    addMealFav(meal);
+  }
+}
 
+/* const favMealContainer = document.querySelector(".recipe__favorite-meal");
 
-
+function addMealFav(mealsID) {
+  localStorage.getItem("mealIds");
+  return (favMealContainer.innerHTML += favMealBasket
+    .map((basket) => {
+      return `
+      <article class="favorite__card">
+          <div class="favorite__top">
+              <img src=${basket.strMealThumb} alt="" class="favorite__img">
+              <p class="favorite__title">${basket.strMeal}</p>
+          </div>
+          <span class="favorite__delete">
+              <i class="ri-close-line"></i>
+          </span>
+      </article>
+    `;
+    })
+    .join(""));
+} */
 
 const favMealContainer = document.querySelector(".recipe__favorite-meal");
 
-function addMealToFav(meal) {
-  favMealContainer.innerHTML += `
+function addMealFav(meal) {
+  favMealContainer.innerHTML = favMealBasket
+    .map((fav) => {
+      return `
       <article class="favorite__card">
         <div class="favorite__top">
-            <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" alt="" class="favorite__img">
-            <p class="favorite__title">${meal.strMeal}</p>
+            <img src=${fav.strMealThumb} alt="" class="favorite__img">
+            <p class="favorite__title">${fav.strMeal}</p>
         </div>
         <span class="favorite__delete">
             <i class="ri-close-line"></i>
         </span>
       </article>
   `;
+    })
+    .join("");
 }
+
+addMealFav(favMealBasket);
+
+/* 
+
+
+
+
+
+
+
+
  */
